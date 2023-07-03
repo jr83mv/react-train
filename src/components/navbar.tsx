@@ -1,7 +1,7 @@
 import { Spiral as Hamburger } from 'hamburger-react'
 function Navbar() {
   return (
-    <nav className="flex flex-row justify-between items-center px-24">
+    <nav className="flex flex-row justify-between items-center px-24 py-2.5 w-[1440px] ">
       <a href="#" className="flex items-center justify-center gap-3">
         <img src="./Icon.png"></img>
         <img src="./Positivus.png" alt="" />
