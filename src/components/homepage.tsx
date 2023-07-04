@@ -13,10 +13,10 @@ function HomePage(){
     return(
         <div className=" flex-col justify-start items-start gap-[70px] inline-flex" id="outer-container">
             <Navbar/>
-           <Header/>
-
+            <Header/>
             <Services/>
 
+            {/* case Studies */}
             <div className="  px-[100px] justify-start items-start gap-10 inline-flex">
                 <div className=" flex-col justify-start items-start inline-flex">
                     <div className=" px-[7px] bg-lime-300 rounded-md flex-col justify-start items-start gap-2.5 flex">
@@ -51,6 +51,7 @@ function HomePage(){
                 </div>
             </div>
 
+            {/* Working process */}
             <div className="  px-[100px] justify-start items-start gap-10 inline-flex">
                 <div className=" flex-col justify-start items-start inline-flex">
                     <div className=" px-[7px] bg-lime-300 rounded-md flex-col justify-start items-start gap-2.5 flex">
@@ -66,6 +67,7 @@ function HomePage(){
                 ))}
             </div>
             
+            {/* Team */}
             <div className=" px-[100px] justify-start items-start gap-10 inline-flex">
                 <div className=" flex-col justify-start items-start inline-flex">
                     <div className=" px-[7px] bg-lime-300 rounded-md flex-col justify-start items-start gap-2.5 flex">
@@ -87,6 +89,7 @@ function HomePage(){
                 <div className="text-center text-white text-[20px] font-normal leading-7">See all team</div>
             </div>
 
+            {/* Testimonials */}
             <div className="  px-[100px] justify-start items-start gap-10 inline-flex">
                 <div className="flex-col justify-start items-start inline-flex">
                     <div className="px-[7px] bg-lime-300 rounded-md flex-col justify-start items-start gap-2.5 flex">
@@ -96,7 +99,7 @@ function HomePage(){
                 <div className=" text-black text-[18px] font-normal text-start">Hear from Our Satisfied Clients: Read Our Testimonials to Learn More about Our Digital Marketing Services</div>
             </div>
             
-
+            {/* contact us */}
             <div className=" px-[100px] justify-start items-start gap-10 inline-flex">
                 <div className="flex-col justify-start items-start inline-flex">
                     <div className="px-[7px] bg-lime-300 rounded-md flex-col justify-start items-start gap-2.5 flex">
