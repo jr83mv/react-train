@@ -1,0 +1,42 @@
+name: Publish NPM Package
+
+on:
+  push:
+    branches:
+      - ci/cd
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v2
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: "16.x"
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Determine version type
+        run: |
+          versionType=$(git log -1 --pretty=%B | grep -Eio '^(patch|minor|major)')
+          echo "versionType:$versionType"
+          if [[ -z "$versionType" ]]; then
+              echo "No valid version type found in commit message, defaulting to patch."
+              versionType="patch"
+          else
+              versionType=${versionType%:}
+          fi
+
+      - uses: actions/checkout@v2
+      - run: git config --global user.email "$GITHUB_ACTOR@users.noreply.github.com"
+      - run: git config --global user.name "$GITHUB_ACTOR"
+      - run: npm version $versionType -m "v%s" -d
+      - run: VERSION=$(node -p "require('./package.json').version")
+      - run: git tag ${VERSION}
+      - run: git push origin --tags
+      - run: git push origin --follow-tags
