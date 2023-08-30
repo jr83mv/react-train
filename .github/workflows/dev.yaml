@@ -23,19 +23,19 @@ jobs:
 
       - name: Determine version type
         run: |
-          versionType=$(git log -1 --pretty=%B | grep -Eio '^(patch|minor|major)')
-          echo "versionType:$versionType"
-          if [[ -z "$versionType" ]]; then
-              echo "No valid version type found in commit message, defaulting to patch."
-              versionType="patch"
-          else
-              versionType=${versionType%:}
-          fi
+          commit_message_body=$(git log -1 --oneline | cut -f2-)
 
       - uses: actions/checkout@v2
       - run: git config --global user.email "$GITHUB_ACTOR@users.noreply.github.com"
       - run: git config --global user.name "$GITHUB_ACTOR"
-      - run: npm version $versionType -m "v%s" -d
+      - run: |
+          if [[ "$commit_message_body" == *"BREAKING CHANGE"* ]]; then
+            npm version major -m "v%s" -d
+          elif [[ "$commit_message_body" == *"feat"* ]]; then
+            npm version minor -m "v%s" -d
+          else
+            npm version patch -m "v%s" -d
+          fi
       - run: VERSION=$(node -p "require('./package.json').version")
       - run: git tag ${VERSION}
       - run: git push origin --tags
