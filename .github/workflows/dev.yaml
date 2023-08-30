@@ -23,19 +23,22 @@ jobs:
 
       - name: Determine version type
         run: |
-          commit_message_body=$(git log -1 --oneline | cut -f2-)
+          commit_message_body=$(git log -1 --pretty=%B | grep -Eio '^(fix|feat|breaking)')
+          echo "commit_message_body=$commit_message_body" >> $GITHUB_ENV
+          if [[ ${commit_message_body} == "breaking" ]]; then
+            echo "versionType=major" >> $GITHUB_ENV
+          elif [[ ${commit_message_body} == "feat" ]]; then
+            echo "versionType=minor" >> $GITHUB_ENV
+          else 
+            echo "versionType=patch" >> $GITHUB_ENV
+          fi
 
       - uses: actions/checkout@v2
       - run: git config --global user.email "$GITHUB_ACTOR@users.noreply.github.com"
       - run: git config --global user.name "$GITHUB_ACTOR"
       - run: |
-          if [[ "$commit_message_body" == *"BREAKING CHANGE"* ]]; then
-            npm version major -m "v%s" -d
-          elif [[ "$commit_message_body" == *"feat"* ]]; then
-            npm version minor -m "v%s" -d
-          else
-            npm version patch -m "v%s" -d
-          fi
+          npm version $versionType -m "Bump version to %s [skip ci]" -d
+          echo "$versionType"
       - run: VERSION=$(node -p "require('./package.json').version")
       - run: git tag ${VERSION}
       - run: git push origin --tags
